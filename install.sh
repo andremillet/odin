@@ -41,6 +41,21 @@ if [ ! -f "/tmp/odin" ]; then
     exit 1
 fi
 
+# Validate the downloaded file
+FILE_SIZE=$(stat -c%s "/tmp/odin" 2>/dev/null || stat -f%z "/tmp/odin" 2>/dev/null || echo 0)
+if [ "$FILE_SIZE" -lt 100000 ]; then
+    echo "Error: Downloaded file is too small ($FILE_SIZE bytes). Possibly a 404 or error page."
+    rm -f /tmp/odin
+    exit 1
+fi
+
+# Check if it's an ELF executable
+if ! file "/tmp/odin" | grep -q "ELF.*executable"; then
+    echo "Error: Downloaded file is not a valid executable."
+    rm -f /tmp/odin
+    exit 1
+fi
+
 # Copy binary to /usr/local/bin
 sudo cp /tmp/odin /usr/local/bin/
 
