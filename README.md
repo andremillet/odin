@@ -7,7 +7,8 @@ Odin is a CLI tool for managing software projects, serving as a wrapper around G
 - **Config**: Authenticate with GitHub using `gh auth login`.
 - **Create**: Create a new project with a local directory, initialize Git, and set up a GitHub repository.
 - **List**: Interactively list and select projects to work on, providing the path to change directories.
-- **Update**: (Placeholder for future update functionality, e.g., add, commit, and push changes).
+- **Update**: Add, commit, and push changes to the current project.
+- **Upgrade**: Check for Odin updates on GitHub and install them if desired.
 
 ## Quick Install
 
@@ -69,11 +70,17 @@ odin list
 ```
 Displays an interactive menu to select a project. After selection, it provides the command to change to the project directory.
 
-### Update Project (Future)
+### Update Project
 ```bash
 odin update
 ```
-Placeholder for committing and pushing changes.
+Adds all changes, commits with a message, and pushes to the remote repository.
+
+### Upgrade Odin
+```bash
+odin upgrade
+```
+Checks for the latest version of Odin on GitHub. If an update is available, displays the release notes and prompts for installation. Downloads and replaces the binary if confirmed.
 
 ## Requirements
 

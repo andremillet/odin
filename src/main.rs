@@ -5,6 +5,7 @@ mod commands;
 #[derive(Parser)]
 #[command(name = "odin")]
 #[command(about = "A CLI tool for project management")]
+#[command(version = env!("CARGO_PKG_VERSION"))]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -23,6 +24,8 @@ enum Commands {
     List,
     /// Update project: add, commit, and push changes
     Update,
+    /// Upgrade Odin: check for and install updates
+    Upgrade,
 }
 
 fn main() {
@@ -40,6 +43,9 @@ fn main() {
         }
         Commands::Update => {
             commands::update::run();
+        }
+        Commands::Upgrade => {
+            commands::upgrade::run();
         }
     }
 }
