@@ -74,7 +74,7 @@ Displays an interactive menu to select a project. After selection, it provides t
 ```bash
 odin update
 ```
-Adds all changes, commits with a message, and pushes to the remote repository.
+Adds all changes, commits with a message, and pushes to the remote repository. If run in a Git repository not managed by Odin, it offers to adopt the project by creating a CONFIG.toml and adding it to Odin's project list.
 
 ### Upgrade Odin
 ```bash
