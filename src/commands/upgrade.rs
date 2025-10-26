@@ -90,6 +90,13 @@ pub fn run() {
         .status();
 
     if mv.map(|s| s.success()).unwrap_or(false) {
+        // Ensure execute permissions and correct ownership
+        let _ = Command::new("sudo")
+            .args(&["chmod", "+x", &binary_path])
+            .status();
+        let _ = Command::new("sudo")
+            .args(&["chown", &std::env::var("USER").unwrap_or_else(|_| "user".to_string()), &binary_path])
+            .status();
         println!("Odin updated to v{} successfully!", latest_version);
     } else {
         eprintln!("Failed to install the update. You may need to run with sudo.");
