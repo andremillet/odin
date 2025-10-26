@@ -64,6 +64,29 @@ pub fn run(project_name: &str) {
         return;
     }
 
+    // Create initial README and commit
+    let readme_content = format!("# {}\n\nProject created with Odin.", project_name);
+    if let Err(e) = fs::write(project_path.join("README.md"), readme_content) {
+        eprintln!("Failed to create README.md: {}", e);
+        return;
+    }
+    if let Err(e) = Command::new("git")
+        .args(&["add", "README.md"])
+        .current_dir(project_path)
+        .status()
+    {
+        eprintln!("Failed to add README.md: {}", e);
+        return;
+    }
+    if let Err(e) = Command::new("git")
+        .args(&["commit", "-m", "Initial commit"])
+        .current_dir(project_path)
+        .status()
+    {
+        eprintln!("Failed to commit: {}", e);
+        return;
+    }
+
     // Create GitHub repo using gh CLI
     let output = Command::new("gh")
         .args(&["repo", "create", project_name, "--public", "--source=.", "--remote=origin", "--push"])

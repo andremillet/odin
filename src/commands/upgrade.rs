@@ -72,6 +72,9 @@ pub fn run() {
         return;
     }
 
+    // Ensure the downloaded binary has execute permissions
+    let _ = Command::new("chmod").args(&["+x", temp_path]).status();
+
     // Find current binary path
     let which = Command::new("which").arg("odin").output();
     let binary_path = match which {
@@ -85,9 +88,11 @@ pub fn run() {
     };
 
     // Replace binary (may need sudo)
-    let mv = Command::new("sudo")
-        .args(&["mv", temp_path, &binary_path])
-        .status();
+    let mv = if binary_path.starts_with("/home/") {
+        Command::new("mv").args(&[temp_path, &binary_path]).status()
+    } else {
+        Command::new("sudo").args(&["mv", temp_path, &binary_path]).status()
+    };
 
     if mv.map(|s| s.success()).unwrap_or(false) {
         // Ensure execute permissions and correct ownership
