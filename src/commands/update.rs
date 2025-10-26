@@ -131,16 +131,39 @@ pub fn run() {
         .args(&["remote", "get-url", "origin"])
         .output();
 
-    if remote_check.map_or(false, |o| o.status.success()) {
+    if let Ok(output) = remote_check {
+        if output.status.success() {
+            let remote_url = String::from_utf8_lossy(&output.stdout).trim().to_string();
+
+        // Get project name from CONFIG.toml
+        let config_content = fs::read_to_string("CONFIG.toml").unwrap_or_default();
+        let project_name = if let Some(line) = config_content.lines().find(|l| l.starts_with("name = ")) {
+            line.split('"').nth(1).unwrap_or("Unknown").to_string()
+        } else {
+            "Unknown".to_string()
+        };
+
+        println!("Project: {}", project_name);
+        println!("Remote: {}", remote_url);
+        print!("Proceed with push? (y/N): ");
+        io::stdout().flush().unwrap();
+        let mut confirm = String::new();
+        io::stdin().read_line(&mut confirm).unwrap();
+        if !confirm.trim().eq_ignore_ascii_case("y") {
+            println!("Push cancelled.");
+            return;
+        }
+
         // Git push
         let push_status = Command::new("git")
             .args(&["push"])
             .status();
 
-        if push_status.map_or(false, |s| s.success()) {
-            println!("Pushed to remote repository.");
-        } else {
-            eprintln!("Failed to push.");
+            if push_status.map_or(false, |s| s.success()) {
+                println!("Pushed to remote repository.");
+            } else {
+                eprintln!("Failed to push.");
+            }
         }
     } else {
         println!("No remote repository configured. Skipping push.");
