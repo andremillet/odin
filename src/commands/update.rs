@@ -126,14 +126,23 @@ pub fn run() {
     }
     println!("Committed with message: {}", message);
 
-    // Git push
-    let push_status = Command::new("git")
-        .args(&["push"])
-        .status();
+    // Check if there's a remote before pushing
+    let remote_check = Command::new("git")
+        .args(&["remote", "get-url", "origin"])
+        .output();
 
-    if push_status.map_or(false, |s| s.success()) {
-        println!("Pushed to remote repository.");
+    if remote_check.map_or(false, |o| o.status.success()) {
+        // Git push
+        let push_status = Command::new("git")
+            .args(&["push"])
+            .status();
+
+        if push_status.map_or(false, |s| s.success()) {
+            println!("Pushed to remote repository.");
+        } else {
+            eprintln!("Failed to push.");
+        }
     } else {
-        eprintln!("Failed to push.");
+        println!("No remote repository configured. Skipping push.");
     }
 }
