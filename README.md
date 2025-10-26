@@ -9,7 +9,19 @@ Odin is a CLI tool for managing software projects, serving as a wrapper around G
 - **List**: Interactively list and select projects to work on, providing the path to change directories.
 - **Update**: (Placeholder for future update functionality, e.g., add, commit, and push changes).
 
+## Quick Install
+
+For a quick installation without cloning the repository:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/andremillet/odin/master/install.sh | bash
+```
+
+This downloads the latest release binary and installs it to `/usr/local/bin`.
+
 ## Installation
+
+For manual installation or development:
 
 1. Clone the repository:
    ```bash
