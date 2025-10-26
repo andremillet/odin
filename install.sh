@@ -65,9 +65,15 @@ chmod +x "$INSTALL_DIR/odin"
 # Clean up
 rm /tmp/odin
 
-# Check if ~/.local/bin is in PATH
+# Ensure ~/.local/bin is at the beginning of PATH
 if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    echo "Adding $HOME/.local/bin to PATH in ~/.bashrc"
+    echo "Adding $HOME/.local/bin to the beginning of PATH in ~/.bashrc"
+    echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> "$HOME/.bashrc"
+    echo "Please restart your shell or run 'source ~/.bashrc' to update PATH."
+elif [[ "$PATH" != "$HOME/.local/bin:"* ]]; then
+    echo "Moving $HOME/.local/bin to the beginning of PATH in ~/.bashrc"
+    # Remove existing and add to front
+    sed -i "/export PATH.*\.local\/bin/d" "$HOME/.bashrc"
     echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> "$HOME/.bashrc"
     echo "Please restart your shell or run 'source ~/.bashrc' to update PATH."
 fi
