@@ -18,7 +18,7 @@ For a quick installation without cloning the repository:
 curl -fsSL https://raw.githubusercontent.com/andremillet/odin/master/install.sh | bash
 ```
 
-This downloads the latest release binary and installs it to `/usr/local/bin`.
+This downloads the latest release binary and installs it to `~/.local/bin` (added to PATH if needed).
 
 ## Installation
 
@@ -35,9 +35,12 @@ For manual installation or development:
    cargo build --release
    ```
 
-3. Install globally (optional):
+3. Install locally:
    ```bash
-   cargo install --path .
+   mkdir -p ~/.local/bin
+   cp target/release/odin ~/.local/bin/
+   chmod +x ~/.local/bin/odin
+   # Ensure ~/.local/bin is in PATH
    ```
 
 Or use the provided install script:

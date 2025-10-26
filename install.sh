@@ -56,13 +56,21 @@ if ! file "/tmp/odin" | grep -q "ELF.*executable"; then
     exit 1
 fi
 
-# Copy binary to /usr/local/bin
-sudo cp /tmp/odin /usr/local/bin/
-
-# Make it executable
-sudo chmod +x /usr/local/bin/odin
+# Install to user directory to avoid sudo
+INSTALL_DIR="$HOME/.local/bin"
+mkdir -p "$INSTALL_DIR"
+cp /tmp/odin "$INSTALL_DIR/odin"
+chmod +x "$INSTALL_DIR/odin"
 
 # Clean up
 rm /tmp/odin
 
-echo "Odin installed successfully! Run 'odin --help' to get started."
+# Check if ~/.local/bin is in PATH
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    echo "Adding $HOME/.local/bin to PATH in ~/.bashrc"
+    echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> "$HOME/.bashrc"
+    echo "Please restart your shell or run 'source ~/.bashrc' to update PATH."
+fi
+
+echo "Odin installed successfully to $INSTALL_DIR/odin!"
+echo "Run 'odin --help' to get started."
