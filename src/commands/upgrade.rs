@@ -9,6 +9,8 @@ struct Release {
 }
 
 pub fn run() {
+    crate::commands::ensure_gh_installed();
+
     let current_version = env!("CARGO_PKG_VERSION");
 
     println!("Checking for updates...");

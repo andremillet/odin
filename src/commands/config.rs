@@ -1,6 +1,8 @@
 use std::process::Command;
 
 pub fn run() {
+    crate::commands::ensure_gh_installed();
+
     println!("Starting GitHub authentication...");
     println!("Follow the prompts to authenticate with your GitHub account.");
     println!("After completing authentication in the browser, the command should exit automatically.");

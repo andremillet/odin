@@ -1,6 +1,6 @@
 # Odin
 
-Odin is a CLI tool for managing software projects, serving as a wrapper around GitHub CLI. It simplifies project creation, configuration, and management by automating Git and GitHub operations.
+Odin is a CLI tool for managing software projects, serving as a wrapper around GitHub CLI. It simplifies project creation, configuration, and management by automating Git and GitHub operations. GitHub CLI is installed automatically if not present.
 
 ## Features
 
@@ -84,9 +84,9 @@ Checks for the latest version of Odin on GitHub. If an update is available, disp
 
 ## Requirements
 
-- Rust (for building)
-- GitHub CLI (`gh`) installed and authenticated
 - Git
+- GitHub CLI (`gh`) - automatically installed if missing
+- Internet connection for GitHub operations
 
 ## Project Structure
 

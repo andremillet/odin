@@ -11,6 +11,8 @@ struct Project {
 }
 
 pub fn run(project_name: &str) {
+    crate::commands::ensure_gh_installed();
+
     // Check GitHub auth
     let auth_check = Command::new("gh").args(&["auth", "status"]).output();
     if !auth_check.map(|o| o.status.success()).unwrap_or(false) {
