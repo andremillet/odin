@@ -88,16 +88,17 @@ pub fn run() {
     };
 
     // Replace binary (may need sudo)
-    let mv = if binary_path.starts_with("/home/") {
-        Command::new("mv").args(&[temp_path, &binary_path]).status()
-    } else {
-        Command::new("sudo").args(&["mv", temp_path, &binary_path]).status()
-    };
+    let mv = Command::new("sudo")
+        .args(&["mv", temp_path, &binary_path])
+        .status();
 
     if mv.map(|s| s.success()).unwrap_or(false) {
         // Ensure execute permissions and correct ownership
         if binary_path.starts_with("/home/") {
-            // User directory, no sudo needed
+            // User directory, restore ownership and permissions
+            let _ = Command::new("sudo")
+                .args(&["chown", &std::env::var("USER").unwrap_or_else(|_| "user".to_string()), &binary_path])
+                .status();
             let _ = Command::new("chmod")
                 .args(&["+x", &binary_path])
                 .status();
